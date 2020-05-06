@@ -4,18 +4,19 @@
             My Trello
         </header>
         <main>
-            <p class="info-line">All: 0 tasks</p>
+            <p class="info-line">All: {{ totalCardCount }} tasks</p>
             <list-add></list-add>
             <br>
             <br>
-            <div class="list-index">
+            <draggable class="list-index" :list="lists" @end="movingList">
                 <list v-for="(item, index) in lists"
                     :key="item.id"
                     :title="item.title"
                     :cards="item.cards"
                     :listIndex="index"
+                    @change="movingCard"
                 ></list>
-            </div>
+            </draggable>
         </main>
     </div>
 </template>
@@ -24,15 +25,29 @@
 import ListAdd from './ListAdd.vue'
 import List from './List.vue'
 import { mapState } from 'vuex'
+import draggable from 'vuedraggable'
+
 export default {
     components: {
         ListAdd,
-        List
+        List,
+        draggable
     },
     computed: {
         ...mapState([
             'lists'
         ]),
+        totalCardCount() {
+            return this.$store.getters.totalCardCount
+        }
     },
+    methods: {
+        movingCard: function() {
+            this.$store.dispatch('updateList', { lists: this.lists })
+        },
+        movingList: function() {
+            this.$store.dispatch('updateList', {lists: this.lists })
+        }
+    }
 }
 </script>

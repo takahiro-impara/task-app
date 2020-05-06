@@ -124,6 +124,7 @@ html {
   .list-counter {
     color: rgb(0, 140, 255);
     padding: 15px;
+    margin: 0 0 0 auto;
   }
   
   .deletelist {
